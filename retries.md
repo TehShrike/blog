@@ -121,6 +121,11 @@ And you will get out the same results as the 30 lines above. urllib3 will do
 all of the hard work for you to catch the conditions mentioned above, with sane
 (read: non-intrusive) defaults.
 
-This is coming soon to urllib3 (and with it, to Python Requests and pip). We
+This is coming soon to urllib3 (and with it, to Python Requests and pip); we're
+looking for a bit more [review on the pull request][pr] before we merge it. We
 hope this makes it easier for you to write high performance HTTP clients in
 Python, and appreciate your feedback!
+
+ [pr]: https://github.com/shazow/urllib3/pull/326
+
+*Thanks to Andrey Petrov for reading a draft of this post.*
