@@ -1,5 +1,3 @@
-# A look at the new retry behavior in urllib3
-
 "Build software like a tank." I am not sure where I read this, but I think
 about it a lot, especially when writing HTTP clients. Tanks are incredible
 machines - they are designed to move rapidly and protect their inhabitants in
@@ -13,21 +11,21 @@ writing an HTTP client like a tank is difficult. Here are some examples of
 things that a desirable HTTP client would do for you, that are never there by
 default.
 
-- if a request fails to reach the remote server, we would like to retry it no
+- If a request fails to reach the remote server, we would like to retry it no
 matter what. We don't want to wait around for the server forever though, so we
 want to set a timeout on the connection attempt.
 
-- if we send the request but the remote server doesn't respond in a timely
+- If we send the request but the remote server doesn't respond in a timely
 manner, we want to retry it, but only on requests where it is safe to send the
 request again - so called [idempotent requests][idempotency].
 
-- if the server returns an unexpected response, we want to always retry if the
+- If the server returns an unexpected response, we want to always retry if the
 server didn't do any processing - a 429, 502 or a 503 response usually indicate
 this - as well as all [idempotent requests][idempotency].
 
  [idempotency]: http://restcookbook.com/HTTP%20Methods/idempotency/
 
-- generally we want to sleep between retries to allow the remote
+- Generally we want to sleep between retries to allow the remote
 connection/server to recover, so to speak. To help prevent [thundering herd
 problems,][thundering-herd] we usually sleep with an exponential back off.
 
@@ -35,7 +33,8 @@ problems,][thundering-herd] we usually sleep with an exponential back off.
 
 Here's an example of how you might code this:
 
-```python
+<p>
+[python]
 def resilient_request(method, uri, retries):
     while True:
         try:
@@ -66,7 +65,8 @@ def resilient_request(method, uri, retries):
                     raise
                 time.sleep(2 ** (3 - retries))
                 continue
-```
+[/python]
+</p>
 
 Holy [cyclomatic complexity][mccabe], Batman! This suddenly got complex, and
 the control flow here is not simple to follow, reason about, or test. Better
@@ -83,20 +83,39 @@ the reliability of services on the Internet suffers.
 
 ### A better way
 
-[Andrey Petrov](http://shazow.net/) and I have been putting in a lot of work to
-make it really, really easy for you to write resilient requests in Python. We
-pushed all of the complexity above down into the [urllib3][urllib3] library,
-closer to the request that goes over the wire. Instead of the above, you can
-write this:
+[Andrey Petrov](http://shazow.net/) and I have been putting in a lot of work
+make it really, really easy for you to write resilient requests in Python.
+We pushed the complexity of the above code down into the [urllib3][urllib3]
+library, closer to the request that goes over the wire. Instead of the above,
+you'll be able to write this:
 
  [urllib3]: http://urllib3.readthedocs.org/en/latest/
 
-```python
+<p>
+[python]
+def retry_callable(method, response):
+    """ Determine whether to retry this
+    return ((response.status >= 400 and method in IDEMPOTENT_METHODS)
+            or response.status in (429, 503))
 retry = urllib3.util.Retry(read=3, backoff_factor=2,
-                           codes_whitelist=set([429, 502, 503])
+                           retry_callable=retry_callable)
 http = urllib3.PoolManager()
 resp = http.request(method, uri, retries=retry)
-```
+[/python]
+</p>
+
+You can pass a callable to the retries object to determine the retry behavior
+you'd like to see. Alternatively you can use the convenience `method_whitelist`
+and `codes_whitelist` helpers to specify which methods to retry.
+
+<p>
+[python]
+retry = urllib3.util.Retry(read=3, backoff_factor=2,
+                           codes_whitelist=set([429, 500]))
+http = urllib3.PoolManager()
+resp = http.request(method, uri, retries=retry)
+[/python]
+</p>
 
 And you will get out the same results as the 30 lines above. urllib3 will do
 all of the hard work for you to catch the conditions mentioned above, with sane
