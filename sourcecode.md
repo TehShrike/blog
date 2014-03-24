@@ -37,7 +37,7 @@ could not be reached for comment, but they did release a special "Hackedocat"
 to commemorate the occasion.
 
 At press time, the top comments on Hacker News were from a person complaining
-about how dumb this article is, another person explaining to everyone that this
+about how lame this article is, another person explaining to everyone that this
 article is satire, and a third person explaining that while he understands this
 is satire, the article is "dumb" and "not that funny", and seven non-sequiturs
 about the wisdom of free markets.
