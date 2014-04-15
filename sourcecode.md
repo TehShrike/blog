@@ -12,7 +12,8 @@ Github stores source code in "reposotories", which are big chunks of code that
 can be edited by Github members. Most version control websites will keep a
 small portion of the source code online (collectively known as the "hot repos")
 and store the rest of repos offline, to prevent a mass download of all of the
-source code. Instead of using hot repos and cold repos, Github stored all of the source code online, which allowed the attackers to download all of it.
+source code. Instead of using hot repos and cold repos, Github stored all of
+the source code online, which allowed the attackers to download all of it.
 
 The attackers used a common program called "ssh" to download all of the files.
 Irresponsibly, Github left port 22, a commonly-used port for SSH connections,
