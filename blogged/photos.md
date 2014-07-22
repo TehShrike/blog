@@ -5,7 +5,7 @@ them. Let's discuss some strategies for ensuring that doesn't happen.
 
 ## What you are doing now is probably not enough.
 
-You current strategy is to have photos and critical files stored on your most
+Your current strategy is to have photos and critical files stored on your most
 current laptop and maybe some things in Dropbox. This means you will probably
 lose your data sometime in the next three years.
 
