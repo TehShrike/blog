@@ -122,13 +122,14 @@ pre-determined track order.
 
 With a genetic algorithm you are going to be generating a lot of roller
 coasters. I wanted a quick way to see whether those roller coasters were
-getting better or not by plotting them. So I used the image package to draw
-roller coasters. To start I didn't try for an isometric view, although that
-would be fun to draw. Instead I just [plotted height change in one image and
-x/y changes in another image][images]. Running this against existing roller
+getting better or not by plotting them. So I used [Go's image package][image]
+to draw roller coasters. To start I didn't try for an isometric view, although
+that would be fun to draw. Instead I just [plotted height change in one image
+and x/y changes in another image][images]. Running this against existing roller
 coasters also revealed some flaws in my track data.
 
  [images]: https://github.com/kevinburke/rct-rides/blob/master/image/2d.go
+ [image]: http://golang.org/pkg/image/
 
 ### A fitness function
 
@@ -243,8 +244,7 @@ C code, because the track computation functions were buried four subroutines
 deep, and each of those subroutines had at least 500 lines of code. Decompiling
 each of these correctly, just to get to the code I wanted, was going to be
 a massive pain. There are ways around this, but ultimately I got back from
-vacation and had to focus on more pressing issues, like trying not to run out
-of money.
+vacation and had to focus on more pressing issues.
 
 ### Conclusion
 
