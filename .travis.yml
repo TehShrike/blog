@@ -1,4 +1,4 @@
 language: python
 python:
     - "pypy"
-install: "pypy --version"
+script: "pypy --version"
