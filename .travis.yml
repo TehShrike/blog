@@ -2,7 +2,7 @@ language: python
 python:
     - "pypy"
 install:
-    - "git clone git@github.com:kevinburke/requests.git"
+    - "git clone https://github.com/kevinburke/requests.git"
     - "cd requests"
     - "git checkout connect"
     - "make init"
