@@ -16,14 +16,14 @@ milliseconds.
 In order, [your machine will load/execute the following files when ZSH
 starts][startup]:
 
-/etc/zshenv
-~/.zshenv
-/etc/zprofile
-~/.zprofile
-/etc/zshrc
-~/.zshrc
-/etc/zlogin
-~/.zlogin
+    /etc/zshenv
+    ~/.zshenv
+    /etc/zprofile
+    ~/.zprofile
+    /etc/zshrc
+    ~/.zshrc
+    /etc/zlogin
+    ~/.zlogin
 
 On my machine only `/etc/zshenv` (which adds paths in `/etc/paths*` to the
 $PATH variable) and `~/.zshrc` actually existed, which simplified the problem
@@ -33,21 +33,22 @@ I used the following two scripts to check execution time. First, this snippet
 logged the execution time of every command run by my startup script in
 `~/tmp/startlog.<pid>`.
 
+<p>
+[bash]
     PROFILE_STARTUP=false
-
     if [[ "$PROFILE_STARTUP" == true ]]; then
         # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
         PS4=$'%D{%M%S%.} %N:%i> '
         exec 3>&2 2>$HOME/tmp/startlog.$$
         setopt xtrace prompt_subst
     fi
-
-    # Entirety of my startup file...
-
+    # Entirety of my startup file... then
     if [[ "$PROFILE_STARTUP" == true ]]; then
         unsetopt xtrace
         exec 2>&3 3>&-
     fi
+[/bash]
+</p>
 
 Essentially this prints the command that zsh is running before you run it. The
 PS4 variable controls the output of this print statement, and allows us to
@@ -77,21 +78,22 @@ Ultimately what I want is to time specific lines/blocks of my zshrc, instead of
 get profiling information for specific lines. I did this by wrapping them in
 `time` commands, like this:
 
+<p>
+[bash]
     { time (
-
         # linux
         (( $+commands[gvim] )) && {
             alias vi=gvim;
             alias svi='sudo gvim'
         }
-
         # set up macvim, if it exists
         (( $+commands[mvim] )) && {
             alias vi=mvim;
             alias svi='sudo mvim'
         }
-
     ) }
+[/bash]
+</p>
 
 This will time commands in a sub-shell, which means that any environment
 variables set in the sub-shell won't be set in the environment. However the
@@ -103,10 +105,12 @@ By far the worst offenders were the various "Add this to your .zshrc" scripts
 that I had added in the past - virtualenvwrapper, travis, git-completion,
 autojump, pyenv, and more. I wanted to see if there was a way to load these
 only when I needed them (I don't, frequently). Turns out there is! Most of
-these set functions in zsh, so I can shadow them with my own functions in
-a zshrc. Once the file with the actual function definition is sourced, it'll
-replace the shim and I'll be fine. Here's an example for autojump:
+these set functions in zsh, so I can shadow them with my own functions in a
+zshrc. Once the file with the actual function definition is sourced, it'll
+replace the shim and I'll be fine. Here's an example for [autojump][autojump]:
 
+<p>
+[bash]
     function j() {
         (( $+commands[brew] )) && {
             local pfx=$(brew --prefix)
@@ -114,13 +118,19 @@ replace the shim and I'll be fine. Here's an example for autojump:
             j "$@"
         }
     }
+[/bash]
+</p>
 
 Or for pyenv:
 
-    pyenv() {
-        eval "$( command pyenv init - )"
-        pyenv "$@"
-    }
+<p>
+[bash]
+pyenv() {
+    eval "$( command pyenv init - )"
+    pyenv "$@"
+}
+[/bash]
+</p>
 
 Essentially on the first invocation, these functions source the actual
 definition and then immediately call it with the arguments passed in.
@@ -138,3 +148,4 @@ your own zshrc.
 [script]: https://bitbucket.org/kevinburke/small-dotfiles/src/c09252b66f4320d85576517abb53d14a2c731766/scripts/parse_zsh_startup.py?at=master
 [pr]: https://github.com/joelthelion/autojump/pull/331
 [weirdfortune]: https://github.com/kevinburke/weirdfortune
+[autojump]: https://github.com/joelthelion/autojump
