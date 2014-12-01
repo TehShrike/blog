@@ -60,21 +60,30 @@ your site. Don't make it harder by adding a vague error message that doesn't
 increase your site's security at all.
 
 *But there's a tradeoff there between security and UX*, I hear you say. I am
-trying to show you there is no tradeoff; you are choosing between a better user
-experience and a worse user experience.
+trying to show you there is no tradeoff, as presented above; you are choosing
+between a better user experience and a worse user experience.
 
 ## What should I do instead?
 
-Accept that your login page and your signup pages are targets for malicious
-behavior, and design appropriately.
+Here is an actual UX/security tradeoff: you *can* make the signup process email
+based. When someone attempts to sign up with an email address, you send them
+an email to complete the registration process. If they don't control the email
+inbox, they can't see whether the email address has an account already. This is
+much more arduous and requires two context switches (go into your email, avoid
+distraction, wait for email to arrive, click link in email, remember what you
+were doing on site). I don't recommend this, because of the context switches,
+though you *can* implement it.
 
-- Rate limiting can go a long way to preventing brute force attacks. To find
+Otherwise, accept that your login page and your signup pages are targets for
+malicious behavior, and design appropriately.
+
+- Rate limiting can go a fair way to preventing brute force attacks. To find
 email addresses, an attacker is going to need to try a lot of email addresses
 and/or a lot of passwords, and get a lot of them wrong. Consider throttling
 invalid login attempts by IP address or subnet. Check submitted passwords
 against a dictionary of common passwords (123456, monkey, etc) and ban that
 traffic extra hard. Exponential backoff (forcing attackers to try again after
-1, 2, 4, 8, 16.. seconds) is useful as well.
+1, 2, 4, 8, 16.. seconds) is useful.
 
 - Give guidance to users about creating strong passwords. Allow easy
 integration with LastPass or 1Password.
@@ -82,4 +91,4 @@ integration with LastPass or 1Password.
 - Add a 2-factor auth option to your website. Encourage users to use it.
 
 - Warn users about malicious behavior ("someone is trying to snoop your
-  password") and contact them about suspicious logins.
+password") and contact them about suspicious logins.
