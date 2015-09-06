@@ -4,11 +4,10 @@ The Shyp API currently runs on top of the [Sails JS framework][sails]. It's
 an extremely popular framework - the project has over 11,000 stars on Github,
 and it's one of the top 100 most popular projects on the site. However, we've
 had a very poor experience with it, and with [Waterline][waterline], the ORM
-that runs underneath it. We run into unexpected behavior maybe once every two
-weeks. Remember when you learned that `java.net.URL` [does a DNS lookup to
-check whether a URL is equivalent to another URL][dns]? Imagine finding an
-issue like that every two weeks or so and that's the feeling I get using Sails
-and Waterline.
+that runs underneath it. Remember when you learned that `java.net.URL` [does a
+DNS lookup to check whether a URL is equivalent to another URL][dns]? Imagine
+finding an issue like that every two weeks or so and that's the feeling I get
+using Sails and Waterline.
 
 [sails]: https://sailsjs.org
 [dns]: http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
