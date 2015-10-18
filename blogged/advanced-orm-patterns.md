@@ -297,7 +297,7 @@ very, very careful code... or you can ask Postgres to do it for you:
 
 <p>
 [sql]
-CREATE INDEX "only_one_assigned_driver" ON pickups(driver_id) WHERE
+CREATE UNIQUE INDEX "only_one_assigned_driver" ON pickups(driver_id) WHERE
     status = 'ASSIGNED';
 [/sql]
 </p>
