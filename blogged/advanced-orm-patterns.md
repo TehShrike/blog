@@ -27,7 +27,7 @@ indicates.*
 Say you define an ActiveRecord class that looks like this:
 
 <p>
-[ruby]
+[ruby gutter="false"]
 class User < ActiveRecord::Base
   validates :email, uniqueness: true
 end
@@ -61,7 +61,7 @@ What if I told you you can do the same insert in one query instead of four,
 migration, write this:
 
 <p>
-[sql]
+[sql gutter="false"]
 CREATE TABLE users (email TEXT UNIQUE);
 [/sql]
 </p>
@@ -70,7 +70,7 @@ The `UNIQUE` is the key bit there; it adds a unique key on the table. Then,
 instead of wrapping the query in a transaction, just try an INSERT.
 
 <p>
-[sql]
+[sql gutter="false"]
 > insert into users (email) values ('foo@example.com');
 INSERT 0 1
 > insert into users (email) values ('foo@example.com');
@@ -88,7 +88,7 @@ if speed counts (and it probably does), it's worth it to investigate this.
 Say you wanted to read a file. You *could* write this:
 
 <p>
-[python]
+[python gutter="false"]
 if not os.path.isfile(filename):
     raise ValueError("File does not exist")
 with open(filename, 'r') as f:
@@ -103,7 +103,7 @@ latter would throw an `IOError`, which won't be handled. Far better to just try
 to read the file and handle errors appropriately.
 
 <p>
-[python]
+[python gutter="false"]
 try:
     with open(filename, 'r') as f:
         f.read()
@@ -117,7 +117,7 @@ Say you have a foreign key reference - `phone_numbers.user_id` refers to
 `users.id`, and you want to validate that the `user_id` is valid. You could do:
 
 <p>
-[python]
+[python gutter="false"]
 def write_phone_number(number, user_id):
     user = Users.find_by_id(user_id)
     if user is None:
@@ -132,7 +132,7 @@ you have a race between the time you fetch the user and the time you create the
 number.
 
 <p>
-[python]
+[python gutter="false"]
 def write_phone_number(number, user_id):
     try
         Number.create(number=number, user_id=user_id)
@@ -149,7 +149,7 @@ def write_phone_number(number, user_id):
 Let's say you have the following code to charge a user's account.
 
 <p>
-[python]
+[python gutter="false"]
 def charge_customer(account_id, amount=20):
     account = Accounts.get_by_id(account_id)
     account.balance = account.balance - 20
@@ -163,7 +163,7 @@ def charge_customer(account_id, amount=20):
 Under the hood, here's what that will generate:
 
 <p>
-[sql]
+[sql gutter="false"]
 SELECT * FROM accounts WHERE id = ?
 UPDATE accounts SET balance = 30 WHERE id = ?;
 [/sql]
@@ -204,7 +204,7 @@ referenced above.
 - Skip the SELECT and write a single UPDATE query that looks like this:
 
     <p>
-    [sql]
+    [sql gutter="false"]
     UPDATE accounts SET balance = balance - 20 WHERE id = ?;
     [/sql]
     </p>
@@ -219,7 +219,7 @@ zero!* You can - you just need to enforce the nonnegative constraint in the
 database, not the application.
 
 <p>
-[sql]
+[sql gutter="false"]
 CREATE TABLE accounts (
     id integer primary key,
     balance integer CHECK (balance >= 0),
@@ -237,7 +237,7 @@ database is acceptable, via a WHERE clause. The latter technique is very useful
 for state machines:
 
 <p>
-[sql]
+[sql gutter="false"]
 UPDATE pickups SET status='submitted' WHERE status='draft' AND id=?;
 [/sql]
 </p>
@@ -262,7 +262,7 @@ update a user's phone number, and the other to update a user's email address,
 and both call `.save()` on the record.
 
 <p>
-[sql]
+[sql gutter="false"]
 UPDATE users SET email='oldemail@example.com', phone_number='newnumber' WHERE id = 1;
 UPDATE users SET email='newemail@example.com', phone_number='oldnumber' WHERE id = 1;
 [/sql]
@@ -282,7 +282,7 @@ we have a pickups table. Each pickup has a driver ID and a status (DRAFT,
 ASSIGNED, QUEUED, etc).
 
 <p>
-[sql]
+[sql gutter="false"]
 CREATE TABLE pickups (
     id integer,
     driver_id INTEGER REFERENCES drivers(id),
@@ -296,7 +296,7 @@ at a time. You can do this in the application by using transactions and writing
 very, very careful code... or you can ask Postgres to do it for you:
 
 <p>
-[sql]
+[sql gutter="false"]
 CREATE UNIQUE INDEX "only_one_assigned_driver" ON pickups(driver_id) WHERE
     status = 'ASSIGNED';
 [/sql]
@@ -305,7 +305,7 @@ CREATE UNIQUE INDEX "only_one_assigned_driver" ON pickups(driver_id) WHERE
 Now watch what happens if you attempt to violate that constraint:
 
 <p>
-[sql]
+[sql gutter="false"]
 > INSERT INTO pickups (id, driver_id, status) VALUES (1, 101, 'ASSIGNED');
 INSERT 0 1
 > INSERT INTO pickups (id, driver_id, status) VALUES (2, 101, 'DRAFT');
