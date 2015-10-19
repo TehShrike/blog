@@ -230,6 +230,13 @@ CREATE TABLE accounts (
 That will throw any time you try to write a negative balance, and you can
 handle the write failure in the application layer.
 
+**Update**: Apparently MySQL [accepts check constraints as valid syntax, but does
+not execute them][mysql-checks], so you might need to take a different
+approach. Thanks [olivier][olivier] for pointing this out!
+
+[mysql-checks]: https://stackoverflow.com/q/2115497/329700
+[olivier]: https://lobste.rs/u/olivier
+
 The key point is that your updates should be able to run in any order without
 breaking the application. Use relative ranges - `balance = balance - 20` for
 example - if you can. Or, only apply the UPDATE if the previous state of the
