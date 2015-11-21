@@ -38,7 +38,7 @@ station. Crucial steps in the shipping flow get skipped.
 different classes and controllers, which handle the object in different parts
 of its lifecycle. It becomes difficult to figure out how the object moves
 between various states. Customer support tells you that an item is in a
-particular state and it's very to figure out how it got there.
+particular state and it takes great effort to figure out how it got there.
 
 These are all *really* bad positions to be in! A lot of pain for you and a lot
 of pain for your teams in the field.
